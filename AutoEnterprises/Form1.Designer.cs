@@ -56,6 +56,9 @@
             this.Column13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.changeButton = new System.Windows.Forms.Button();
+            this.ClearButton = new System.Windows.Forms.Button();
+            this.StatusLabel = new System.Windows.Forms.Label();
+            this.UpdateButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.insertTable)).BeginInit();
@@ -68,6 +71,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(835, 300);
             this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
             // menuStrip1
             // 
@@ -266,11 +270,44 @@
             this.changeButton.Visible = false;
             this.changeButton.Click += new System.EventHandler(this.changeButton_Click);
             // 
+            // ClearButton
+            // 
+            this.ClearButton.Location = new System.Drawing.Point(504, 488);
+            this.ClearButton.Name = "ClearButton";
+            this.ClearButton.Size = new System.Drawing.Size(109, 23);
+            this.ClearButton.TabIndex = 22;
+            this.ClearButton.Text = "To insert mode";
+            this.ClearButton.UseVisualStyleBackColor = true;
+            this.ClearButton.Visible = false;
+            this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
+            // 
+            // StatusLabel
+            // 
+            this.StatusLabel.AutoSize = true;
+            this.StatusLabel.Location = new System.Drawing.Point(286, 511);
+            this.StatusLabel.Name = "StatusLabel";
+            this.StatusLabel.Size = new System.Drawing.Size(63, 13);
+            this.StatusLabel.TabIndex = 23;
+            this.StatusLabel.Text = "Insert Mode";
+            // 
+            // UpdateButton
+            // 
+            this.UpdateButton.Location = new System.Drawing.Point(144, 489);
+            this.UpdateButton.Name = "UpdateButton";
+            this.UpdateButton.Size = new System.Drawing.Size(126, 35);
+            this.UpdateButton.TabIndex = 24;
+            this.UpdateButton.Text = "Update";
+            this.UpdateButton.UseVisualStyleBackColor = true;
+            this.UpdateButton.Click += new System.EventHandler(this.UpdateButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(859, 536);
+            this.Controls.Add(this.UpdateButton);
+            this.Controls.Add(this.StatusLabel);
+            this.Controls.Add(this.ClearButton);
             this.Controls.Add(this.changeButton);
             this.Controls.Add(this.insertTable);
             this.Controls.Add(this.DeleteButton);
@@ -320,6 +357,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column12;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column13;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column14;
+        private System.Windows.Forms.Button ClearButton;
+        private System.Windows.Forms.Label StatusLabel;
+        private System.Windows.Forms.Button UpdateButton;
     }
 }
 

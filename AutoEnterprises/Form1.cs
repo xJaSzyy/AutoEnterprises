@@ -1,8 +1,10 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Misc;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static AutoEnterprises.Form1;
+using static MongoDB.Bson.Serialization.Serializers.SerializerHelper;
 
 namespace AutoEnterprises
 {
@@ -232,11 +235,8 @@ namespace AutoEnterprises
             [BsonElement("специализация")] public string Specialisation { get; set; }
         }
 
-        private void staffToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ChangeToStaffInsertTable()
         {
-            insertTable.Rows.Clear();
-            ReadDataStaff();
-            Mode = "Staff";
             changeButton.Visible = false;
             ColumnsVisible();
             insertTable.Columns[0].HeaderText = "_id";
@@ -255,11 +255,8 @@ namespace AutoEnterprises
             insertTable.Columns[13].Visible = false;
         }
 
-        private void transportToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ChangeToTransportInsertTable()
         {
-            insertTable.Rows.Clear();
-            ReadDataTransport();
-            Mode = "Transport";
             changeButton.Visible = true;
             ColumnsVisible();
             insertTable.Columns[0].HeaderText = "_id";
@@ -278,11 +275,8 @@ namespace AutoEnterprises
             insertTable.Columns[13].Visible = false;
         }
 
-        private void brigadesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ChangeToBrigadesInsertTable()
         {
-            insertTable.Rows.Clear();
-            ReadDataBrigades();
-            Mode = "Brigades";
             changeButton.Visible = false;
             ColumnsVisible();
             insertTable.Columns[0].HeaderText = "_id";
@@ -301,11 +295,8 @@ namespace AutoEnterprises
             insertTable.Columns[13].Visible = false;
         }
 
-        private void facilitiesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ChangeToFacilitiesInsertTable()
         {
-            insertTable.Rows.Clear();
-            ReadDataFacilities();
-            Mode = "Facilities";
             changeButton.Visible = false;
             ColumnsVisible();
             insertTable.Columns[0].HeaderText = "_id";
@@ -324,11 +315,8 @@ namespace AutoEnterprises
             insertTable.Columns[13].Visible = false;
         }
 
-        private void repairsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ChangeToRepairsInsertTable()
         {
-            insertTable.Rows.Clear();
-            ReadDataRepairs();
-            Mode = "Repairs";
             changeButton.Visible = false;
             ColumnsVisible();
             insertTable.Columns[0].HeaderText = "_id";
@@ -347,11 +335,8 @@ namespace AutoEnterprises
             insertTable.Columns[13].Visible = false;
         }
 
-        private void driversToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ChangeToDriversInsertTable()
         {
-            insertTable.Rows.Clear();
-            ReadDataDrivers();
-            Mode = "Drivers";
             changeButton.Visible = false;
             ColumnsVisible();
             insertTable.Columns[0].HeaderText = "_id";
@@ -370,11 +355,8 @@ namespace AutoEnterprises
             insertTable.Columns[13].Visible = false;
         }
 
-        private void routesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ChangeToRoutesInsertTable()
         {
-            insertTable.Rows.Clear();
-            ReadDataRoutes();
-            Mode = "Routes";
             changeButton.Visible = true;
             ColumnsVisible();
             insertTable.Columns[0].HeaderText = "_id";
@@ -391,6 +373,76 @@ namespace AutoEnterprises
             insertTable.Columns[11].Visible = false;
             insertTable.Columns[12].Visible = false;
             insertTable.Columns[13].Visible = false;
+        }
+
+        private void staffToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            insertTable.DataSource = null;
+            insertTable.ColumnCount = 14;
+            insertTable.Rows.Clear();
+            ReadDataStaff();
+            Mode = "Staff";
+            ChangeToStaffInsertTable();
+        }
+
+        private void transportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            insertTable.DataSource = null;
+            insertTable.ColumnCount = 14;
+            insertTable.Rows.Clear();
+            ReadDataTransport();
+            Mode = "Transport";
+            ChangeToTransportInsertTable();
+        }
+
+        private void brigadesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            insertTable.DataSource = null;
+            insertTable.ColumnCount = 14;
+            insertTable.Rows.Clear();
+            ReadDataBrigades();
+            Mode = "Brigades";
+            ChangeToBrigadesInsertTable();
+        }
+
+        private void facilitiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            insertTable.DataSource = null;
+            insertTable.ColumnCount = 14;
+            insertTable.Rows.Clear();
+            ReadDataFacilities();
+            Mode = "Facilities";
+            ChangeToFacilitiesInsertTable();
+        }
+
+        private void repairsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            insertTable.DataSource = null;
+            insertTable.ColumnCount = 14;
+            insertTable.Rows.Clear();
+            ReadDataRepairs();
+            Mode = "Repairs";
+            ChangeToRepairsInsertTable();
+        }
+
+        private void driversToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            insertTable.DataSource = null;
+            insertTable.ColumnCount = 14;
+            insertTable.Rows.Clear();
+            ReadDataDrivers();
+            Mode = "Drivers";
+            ChangeToDriversInsertTable();
+        }
+
+        private void routesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            insertTable.DataSource = null;
+            insertTable.ColumnCount = 14;
+            insertTable.Rows.Clear();
+            ReadDataRoutes();
+            Mode = "Routes";
+            ChangeToRoutesInsertTable();
         }
 
         private void InsertButton_Click(object sender, EventArgs e)
@@ -598,6 +650,426 @@ namespace AutoEnterprises
                         FeatureAdd = "объем_грузоперевозки";
                     }
                 }
+            }
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            ClearButton.Visible = true;
+            StatusLabel.Text = "Update Mode";
+            insertTable.RowCount = 1;
+            insertTable.ColumnCount = 14;
+            InsertButton.Visible = false;
+            DeleteButton.Visible = false;
+
+            if (Mode == "Staff")
+            {
+                ChangeToStaffInsertTable();
+                for (int i = 0; i < dataGridView1.RowCount; i++)
+                {
+                    for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                    {
+                        if (i == e.RowIndex)
+                        {
+                            insertTable.Rows[0].Cells[j].Value = dataGridView1.Rows[i].Cells[j].Value;
+                        }
+                    }
+                }
+            }
+            else if (Mode == "Drivers")
+            {
+                ChangeToDriversInsertTable();
+                for (int i = 0; i < dataGridView1.RowCount; i++)
+                {
+                    for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                    {
+                        if (i == e.RowIndex)
+                        {
+                            if (j != 4)
+                            {
+                                insertTable.Rows[0].Cells[j].Value = dataGridView1.Rows[i].Cells[j].Value;
+                            }
+                            else
+                            {
+                                BsonDocument bd = dataGridView1.Rows[i].Cells[j].Value.ToBsonDocument();
+                                insertTable.Rows[0].Cells[j].Value = bd[0];
+                                insertTable.Rows[0].Cells[j + 1].Value = bd[1];
+                            }
+                        }
+                    }
+                }
+            }
+            else if (Mode == "Facilities")
+            {
+                ChangeToFacilitiesInsertTable();
+                insertTable.RowCount = 14;
+                for (int i = 0; i < dataGridView1.RowCount; i++)
+                {
+                    for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                    {
+                        if (i == e.RowIndex)
+                        {
+                            if (j != 3)
+                            {
+                                insertTable.Rows[0].Cells[j].Value = dataGridView1.Rows[i].Cells[j].Value;
+                            }
+                            else
+                            {
+                                BsonArray ba = BsonSerializer.Deserialize<BsonArray>(dataGridView1.Rows[i].Cells[j].Value.ToString());
+                                for (int k = 0; k < ba.Count; k++)
+                                {
+                                    BsonDocument bd = ba[k].ToBsonDocument();
+                                    insertTable.Rows[0+k].Cells[j].Value = bd[0];
+                                    insertTable.Rows[0+k].Cells[j + 1].Value = bd[1];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else if (Mode == "Transport")
+            {
+                insertTable.RowCount = 14;
+                for (int i = 0; i < dataGridView1.RowCount; i++)
+                {
+                    for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                    {
+                        if (i == e.RowIndex)
+                        {
+                            insertTable.Rows[0].Cells[j].Value = dataGridView1.Rows[i].Cells[j].Value;
+
+                            if (dataGridView1.Rows[i].Cells[5].Value != null)
+                            {
+                                BsonArray repairs = BsonSerializer.Deserialize<BsonArray>(dataGridView1.Rows[i].Cells[5].Value.ToString());
+                                for (int k = 0; k < repairs.Count; k++)
+                                {
+                                    BsonDocument bd = repairs[k].ToBsonDocument();
+                                    insertTable.Rows[0 + k].Cells[5].Value = bd[0];
+                                    insertTable.Rows[0 + k].Cells[6].Value = bd[1];
+                                    insertTable.Rows[0 + k].Cells[7].Value = bd[2];
+                                }
+                            }
+                            else
+                            {
+                                insertTable.Rows[0].Cells[5].Value = "";
+                                insertTable.Rows[0].Cells[6].Value = "";
+                                insertTable.Rows[0].Cells[7].Value = "";
+                            }
+
+                            BsonDocument characteristics = dataGridView1.Rows[i].Cells[6].Value.ToBsonDocument();
+                            insertTable.Rows[0].Cells[8].Value = characteristics[0];
+                            insertTable.Rows[0].Cells[9].Value = characteristics[2];
+                            insertTable.Rows[0].Cells[10].Value = characteristics[1];
+
+                            if (dataGridView1.Rows[i].Cells[7].Value != null)
+                            {
+                                BsonDocument driver = dataGridView1.Rows[i].Cells[7].Value.ToBsonDocument();
+                                insertTable.Rows[0].Cells[11].Value = driver[0];
+                                insertTable.Rows[0].Cells[12].Value = driver[1];
+                            }
+                        }
+                    }
+                }
+                ChangeToTransportInsertTable();
+            }
+            else if (Mode == "Brigades")
+            {
+                insertTable.RowCount = 14;
+                for (int i = 0; i < dataGridView1.RowCount; i++)
+                {
+                    for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                    {
+                        if (i == e.RowIndex)
+                        {
+                            insertTable.Rows[0].Cells[0].Value = dataGridView1.Rows[i].Cells[0].Value;
+                            insertTable.Rows[0].Cells[7].Value = dataGridView1.Rows[i].Cells[4].Value;
+
+                            BsonDocument brigadiers = dataGridView1.Rows[i].Cells[1].Value.ToBsonDocument();
+                            insertTable.Rows[0].Cells[1].Value = brigadiers[0];
+                            insertTable.Rows[0].Cells[2].Value = brigadiers[1];
+
+                            BsonArray drivers = BsonSerializer.Deserialize<BsonArray>(dataGridView1.Rows[i].Cells[2].Value.ToString());
+                            for (int k = 0; k < drivers.Count; k++)
+                            {
+                                BsonDocument bd = drivers[k].ToBsonDocument();
+                                insertTable.Rows[0 + k].Cells[3].Value = bd[0];
+                                insertTable.Rows[0 + k].Cells[4].Value = bd[1];
+                            }
+
+                            BsonDocument foreman = dataGridView1.Rows[i].Cells[3].Value.ToBsonDocument();
+                            insertTable.Rows[0].Cells[5].Value = foreman[0];
+                            insertTable.Rows[0].Cells[6].Value = foreman[1];
+
+                            BsonDocument supervisor = dataGridView1.Rows[i].Cells[5].Value.ToBsonDocument();
+                            insertTable.Rows[0].Cells[8].Value = supervisor[0];
+                            insertTable.Rows[0].Cells[9].Value = supervisor[1];
+
+                            BsonArray workers = BsonSerializer.Deserialize<BsonArray>(dataGridView1.Rows[i].Cells[6].Value.ToString());
+                            for (int k = 0; k < workers.Count; k++)
+                            {
+                                BsonDocument bd = workers[k].ToBsonDocument();
+                                insertTable.Rows[0 + k].Cells[10].Value = bd[0];
+                                insertTable.Rows[0 + k].Cells[11].Value = bd[1];
+                            }
+                        }
+                    }
+                }
+                ChangeToBrigadesInsertTable();
+            }
+            else if (Mode == "Repairs")
+            {
+                insertTable.RowCount = 14;
+                for (int i = 0; i < dataGridView1.RowCount; i++)
+                {
+                    for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                    {
+                        if (i == e.RowIndex)
+                        {
+                            insertTable.Rows[0].Cells[j].Value = dataGridView1.Rows[i].Cells[j].Value;
+
+                            BsonArray members = BsonSerializer.Deserialize<BsonArray>(dataGridView1.Rows[i].Cells[5].Value.ToString());
+                            for (int k = 0; k < members.Count; k++)
+                            {
+                                BsonDocument bd = members[k].ToBsonDocument();
+                                insertTable.Rows[0 + k].Cells[5].Value = bd[0];
+                                insertTable.Rows[0 + k].Cells[6].Value = bd[1];
+                            }
+                        }
+                    }
+                }
+                ChangeToRepairsInsertTable();
+            }
+            else if (Mode == "Routes")
+            {
+                insertTable.RowCount = 14;
+                for (int i = 0; i < dataGridView1.RowCount; i++)
+                {
+                    for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                    {
+                        if (i == e.RowIndex)
+                        {
+                            insertTable.Rows[0].Cells[0].Value = dataGridView1.Rows[i].Cells[0].Value;
+                            insertTable.Rows[0].Cells[3].Value = dataGridView1.Rows[i].Cells[2].Value;
+                            insertTable.Rows[0].Cells[4].Value = dataGridView1.Rows[i].Cells[3].Value;
+
+                            BsonArray dates = BsonSerializer.Deserialize<BsonArray>(dataGridView1.Rows[i].Cells[1].Value.ToString());
+                            for (int k = 0; k < dates.Count; k++)
+                            {
+                                BsonDocument bd = dates[k].ToBsonDocument();
+                                insertTable.Rows[0 + k].Cells[1].Value = bd[0];
+                                insertTable.Rows[0 + k].Cells[2].Value = bd[1];
+                            }
+
+                            BsonArray transports = BsonSerializer.Deserialize<BsonArray>(dataGridView1.Rows[i].Cells[4].Value.ToString());
+                            for (int k = 0; k < transports.Count; k++)
+                            {
+                                BsonDocument bd = transports[k].ToBsonDocument();
+                                insertTable.Rows[0 + k].Cells[5].Value = bd[0];
+                                insertTable.Rows[0 + k].Cells[6].Value = bd[1];
+                            }
+                        }
+                    }
+                }
+                ChangeToRoutesInsertTable();
+            }
+        }
+
+        private void ClearButton_Click(object sender, EventArgs e)
+        {
+            ClearButton.Visible = false;
+            InsertButton.Visible = true;
+            DeleteButton.Visible = true;
+            insertTable.ColumnCount = 14;
+            insertTable.Rows.Clear();
+            StatusLabel.Text = "Insert Mode";
+            if (Mode == "Staff")
+            {
+                ChangeToStaffInsertTable();
+            }
+            else if (Mode == "Drivers")
+            {
+                ChangeToDriversInsertTable();
+            }
+            else if (Mode == "Facilities")
+            {
+                ChangeToFacilitiesInsertTable();
+            }
+            else if (Mode == "Transport")
+            {
+                ChangeToTransportInsertTable();
+            }
+            else if (Mode == "Brigades")
+            {
+                ChangeToBrigadesInsertTable();
+            }
+            else if (Mode == "Repairs")
+            {
+                ChangeToRepairsInsertTable();
+            }
+            else if (Mode == "Routes")
+            {
+                ChangeToRoutesInsertTable();
+            }
+        }
+
+        private void UpdateButton_Click(object sender, EventArgs e)
+        {
+            if (Mode == "Staff")
+            {
+                var update = Builders<Staff>.Update
+                    .Set("Id", insertTable.Rows[0].Cells[0].Value.ToString())
+                    .Set("LastName", insertTable.Rows[0].Cells[1].Value.ToString())
+                    .Set("FirstName", insertTable.Rows[0].Cells[2].Value.ToString())
+                    .Set("MiddleName", insertTable.Rows[0].Cells[3].Value.ToString())
+                    .Set("Position", insertTable.Rows[0].Cells[4].Value.ToString())
+                    .Set("Specialisation", insertTable.Rows[0].Cells[5].Value.ToString());
+                StaffCollection.UpdateOne(s => s.Id == insertTable.Rows[0].Cells[0].Value.ToString(), update);
+                ReadDataStaff();
+            }
+            else if (Mode == "Drivers")
+            {
+                BsonDocument transport = new BsonDocument { { "_id", insertTable.Rows[0].Cells[4].Value.ToString() }, { "тип", insertTable.Rows[0].Cells[5].Value.ToString() } };
+                var update = Builders<Drivers>.Update
+                    .Set("Id", insertTable.Rows[0].Cells[0].Value.ToString())
+                    .Set("LastName", insertTable.Rows[0].Cells[1].Value.ToString())
+                    .Set("FirstName", insertTable.Rows[0].Cells[2].Value.ToString())
+                    .Set("MiddleName", insertTable.Rows[0].Cells[3].Value.ToString())
+                    .Set("Transport", transport);
+                DriversCollection.UpdateOne(d => d.Id == insertTable.Rows[0].Cells[0].Value.ToString(), update);
+                ReadDataDrivers();
+            }
+            else if (Mode == "Facilities")
+            {
+                BsonArray transports = new BsonArray();
+                for (int i = 0; i < insertTable.RowCount - 1; i++)
+                {
+                    if (insertTable.Rows[i].Cells[3].Value != null && insertTable.Rows[i].Cells[4].Value != null)
+                    {
+                        transports.Add(new BsonDocument { { "тип", insertTable.Rows[i].Cells[3].Value.ToString() }, { "_id", insertTable.Rows[i].Cells[4].Value.ToString() } });
+                    }
+                }
+                
+                var update = Builders<Facilities>.Update
+                    .Set("Id", insertTable.Rows[0].Cells[0].Value.ToString())
+                    .Set("Name", insertTable.Rows[0].Cells[1].Value.ToString())
+                    .Set("Type", insertTable.Rows[0].Cells[2].Value.ToString())
+                    .Set("Transport", transports);
+                FacilitiesCollection.UpdateOne(f => f.Id == insertTable.Rows[0].Cells[0].Value.ToString(), update);
+                ReadDataFacilities();
+            }
+            else if (Mode == "Transport")
+            {
+                BsonDocument characteristics = new BsonDocument { { Feature, insertTable.Rows[0].Cells[8].Value.ToString() }, { "статус", insertTable.Rows[0].Cells[10].Value.ToString() }, { "дата", Convert.ToDateTime(insertTable.Rows[0].Cells[9].Value) } };
+                BsonDocument driver;
+                if (insertTable.Rows[0].Cells[11].Value != null)
+                {
+                    driver = new BsonDocument { { "фамилия", insertTable.Rows[0].Cells[11].Value.ToString() }, { "_id", insertTable.Rows[0].Cells[12].Value.ToString() } };
+                }
+                else
+                {
+                    driver = null;
+                }
+                BsonArray repairs = new BsonArray();
+                if (insertTable.Rows[0].Cells[5].Value != null)
+                {
+                    for (int i = 0; i < insertTable.RowCount - 1; i++)
+                    {
+                        if (insertTable.Rows[i].Cells[5].Value != null && insertTable.Rows[i].Cells[6].Value != null && insertTable.Rows[i].Cells[7].Value != null)
+                        {
+                            repairs.Add(new BsonDocument { { "тип", insertTable.Rows[i].Cells[5].Value.ToString() }, { "стоимость", insertTable.Rows[i].Cells[6].Value.ToString() }, { "_id", insertTable.Rows[i].Cells[7].Value.ToString() } });
+                        }
+                    }
+                }
+                var update = Builders<Transport>.Update
+                    .Set("Id", insertTable.Rows[0].Cells[0].Value.ToString())
+                    .Set("IssueYear", insertTable.Rows[0].Cells[1].Value.ToString())
+                    .Set("Brand", insertTable.Rows[0].Cells[2].Value.ToString())
+                    .Set("Mileage", insertTable.Rows[0].Cells[3].Value.ToString())
+                    .Set("Type", insertTable.Rows[0].Cells[4].Value.ToString())
+                    .Set("Repair", repairs)
+                    .Set("Сharacteristics", characteristics)
+                    .Set("Driver", driver);
+                TransportCollection.UpdateOne(t => t.Id == insertTable.Rows[0].Cells[0].Value.ToString(), update);
+                ReadDataTransport();
+            }
+            else if (Mode == "Brigades")
+            {
+                BsonDocument brigadir = new BsonDocument { { "фамилия", insertTable.Rows[0].Cells[1].Value.ToString() }, { "_id", insertTable.Rows[0].Cells[2].Value.ToString() } };
+                BsonArray drivers = new BsonArray();
+                for (int i = 0; i < insertTable.RowCount - 1; i++)
+                {
+                    if (insertTable.Rows[i].Cells[3].Value != null && insertTable.Rows[i].Cells[4].Value != null)
+                    {
+                        drivers.Add(new BsonDocument { { "фамилия", insertTable.Rows[i].Cells[3].Value.ToString() }, { "_id", insertTable.Rows[i].Cells[4].Value.ToString() } });
+                    }
+                }
+                BsonDocument foreman = new BsonDocument { { "фамилия", insertTable.Rows[0].Cells[5].Value.ToString() }, { "_id", insertTable.Rows[0].Cells[6].Value.ToString() } };
+                BsonDocument supervisor = new BsonDocument { { "фамилия", insertTable.Rows[0].Cells[8].Value.ToString() }, { "_id", insertTable.Rows[0].Cells[9].Value.ToString() } };
+                BsonArray workers = new BsonArray();
+                for (int i = 0; i < insertTable.RowCount - 1; i++)
+                {
+                    if (insertTable.Rows[i].Cells[10].Value != null && insertTable.Rows[i].Cells[11].Value != null)
+                    {
+                        workers.Add(new BsonDocument { { "фамилия", insertTable.Rows[i].Cells[10].Value.ToString() }, { "_id", insertTable.Rows[i].Cells[11].Value.ToString() } });
+                    }
+                }
+                var update = Builders<Brigades>.Update
+                    .Set("Id", insertTable.Rows[0].Cells[0].Value.ToString())
+                    .Set("Brigadier", brigadir)
+                    .Set("Drivers", drivers)
+                    .Set("Foreman", foreman)
+                    .Set("Name", insertTable.Rows[0].Cells[7].Value.ToString())
+                    .Set("Supervisor", supervisor)
+                    .Set("Workers", workers);
+                BrigadesCollection.UpdateOne(b => b.Id == insertTable.Rows[0].Cells[0].Value.ToString(), update);
+                ReadDataBrigades();
+            }
+            else if (Mode == "Repairs")
+            {
+                BsonArray members = new BsonArray();
+                for (int i = 0; i < insertTable.RowCount - 1; i++)
+                {
+                    if (insertTable.Rows[i].Cells[5].Value != null && insertTable.Rows[i].Cells[6].Value != null)
+                    {
+                        members.Add(new BsonDocument { { "фамилия", insertTable.Rows[i].Cells[5].Value.ToString() }, { "_id", insertTable.Rows[i].Cells[6].Value.ToString() } });
+                    }
+                }
+                var update = Builders<Repairs>.Update
+                    .Set("Id", insertTable.Rows[0].Cells[0].Value.ToString())
+                    .Set("Date", Convert.ToDateTime(insertTable.Rows[0].Cells[1].Value.ToString()))
+                    .Set("RepairItem", insertTable.Rows[0].Cells[2].Value.ToString())
+                    .Set("Cost", insertTable.Rows[0].Cells[3].Value.ToString())
+                    .Set("Type", insertTable.Rows[0].Cells[4].Value.ToString())
+                    .Set("Members", members);
+                RepairsCollection.UpdateOne(re => re.Id == insertTable.Rows[0].Cells[0].Value.ToString(), update);
+                ReadDataRepairs();
+            }
+            else if (Mode == "Routes")
+            {
+                BsonArray dates = new BsonArray();
+                for (int i = 0; i < insertTable.RowCount - 1; i++)
+                {
+                    if (insertTable.Rows[i].Cells[1].Value != null && insertTable.Rows[i].Cells[2].Value != null)
+                    {
+                        dates.Add(new BsonDocument { { "дата", insertTable.Rows[i].Cells[1].Value.ToString() }, { FeatureAdd, insertTable.Rows[i].Cells[2].Value.ToString() } });
+                    }
+                }
+                BsonArray transports = new BsonArray();
+                for (int i = 0; i < insertTable.RowCount - 1; i++)
+                {
+                    if (insertTable.Rows[i].Cells[5].Value != null && insertTable.Rows[i].Cells[6].Value != null)
+                    {
+                        transports.Add(new BsonDocument { { Feature, insertTable.Rows[i].Cells[5].Value.ToString() }, { "_id", insertTable.Rows[i].Cells[6].Value.ToString() } });
+                    }
+                }
+                var update = Builders<Routes>.Update
+                    .Set("Id", insertTable.Rows[0].Cells[0].Value.ToString())
+                    .Set("Dates", dates)
+                    .Set("Name", insertTable.Rows[0].Cells[3].Value.ToString())
+                    .Set("TransportType", insertTable.Rows[0].Cells[4].Value.ToString())
+                    .Set("Transport", transports);
+                RoutesCollection.UpdateOne(ro => ro.Id == insertTable.Rows[0].Cells[0].Value.ToString(), update);
+                ReadDataRoutes();
             }
         }
     }
